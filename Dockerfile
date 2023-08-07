@@ -2,13 +2,14 @@
 FROM golang:latest AS builder
 # working directory
 WORKDIR /go/src/github.com/shuttlersIT/intel
+
+# Installing dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+RUN go mod vendor
+RUN go mod verify
 # install html package
-RUN go install golang.org/x/net/html@latest
-COPY main.go    .
-RUN mkdir -p templates
-# copy the templates into working directory
-COPY templates /go/src/github.com/shuttlersIT/intel/templates
-# rebuilt built in libraries and disabled cgo
+COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 # final stage
 FROM alpine:latest
