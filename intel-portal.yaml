@@ -1,0 +1,33 @@
+version: '3'
+services: 
+  intel-portal: 
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+    environment:
+      - VIRTUAL_HOST=intel.shuttlers.africa
+      - LETSENCRYPT_HOST=intel.shuttlers.africa
+    links:
+      - mongodb
+    depends_on:
+      - mongodb
+    networks:
+      - node-network
+  
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - c:/Users/Administrator/Documents/dashboardportaldb/mongo:/data/db
+    networks:
+      - node-network
+
+volumes:
+  mongo:
+
+networks:
+  node-network:
+    driver: bridge
