@@ -3,7 +3,7 @@ FROM golang:latest AS builder
 # working directory
 WORKDIR /go/src/github.com/shuttlersIT/intel
 # install html package
-RUN go install golang.org/x/net/html
+RUN go install golang.org/x/net/html@latest
 COPY main.go    .
 RUN mkdir -p templates
 # copy the templates into working directory
