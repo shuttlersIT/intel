@@ -7,12 +7,12 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
 	"strings"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/mcnijman/go-emailaddress"
+	"github.com/shuttlersIT/intel/creds"
 	"github.com/shuttlersIT/intel/database"
 	"github.com/shuttlersIT/intel/structs"
 	"golang.org/x/oauth2"
@@ -20,15 +20,7 @@ import (
 )
 
 var c string
-
-var cred Credentials
 var conf *oauth2.Config
-
-// Credentials which stores google ids.
-type Credentials struct {
-	Cid     string `json:"cid"`
-	Csecret string `json:"csecret"`
-}
 
 // RandToken generates a random @l length token.
 func RandToken(l int) (string, error) {
@@ -44,16 +36,7 @@ func getLoginURL(state string) string {
 }
 
 func init() {
-	c = "https://github.com/shuttlersIT/intel/creds/creds.json"
-	file, err := ioutil.ReadFile(c)
-	if err != nil {
-		log.Printf("File error: %v\n", err)
-		os.Exit(1)
-	}
-	if err := json.Unmarshal(file, &cred); err != nil {
-		log.Println("unable to marshal data")
-		return
-	}
+	cred := creds.SetCredentials()
 
 	conf = &oauth2.Config{
 		ClientID:     cred.Cid,
