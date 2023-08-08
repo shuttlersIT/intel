@@ -21,7 +21,6 @@ func SetCredentials() Credentials {
 	}
 	if err := json.Unmarshal(file, &Creds); err != nil {
 		log.Println("unable to marshal data")
-
 	}
 
 	return Creds
