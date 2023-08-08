@@ -12,27 +12,14 @@ import (
 
 type Credentials structs.Credentials
 
-var Creds Credentials
-
 func SetCredentials() Credentials {
-	// Open our jsonFile
-	jsonFile, err := os.Open("creds.json")
-	// if we os.Open returns an error then handle it
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("Successfully Creds")
-	// defer the closing of our jsonFile so that we can parse it later on
-	defer jsonFile.Close()
-
-	file, err := ioutil.ReadAll(jsonFile)
+	var Creds Credentials
+	file, err := ioutil.ReadFile("creds/creds.json")
 	if err != nil {
 		log.Printf("File error: %v\n", err)
 		os.Exit(1)
 	}
-	if err := json.Unmarshal(file, &Creds); err != nil {
-		log.Println("unable to marshal data")
-	}
-
+	json.Unmarshal(file, &Creds)
+	fmt.Println(Creds.Cid)
 	return Creds
 }
