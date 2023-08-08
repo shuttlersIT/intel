@@ -20,6 +20,7 @@ func SetCredentials() Credentials {
 		os.Exit(1)
 	}
 	json.Unmarshal(file, &Creds)
+
 	fmt.Println(Creds.Cid)
 	return Creds
 }
