@@ -14,7 +14,7 @@ type Credentials structs.Credentials
 var Creds Credentials
 
 func SetCredentials() Credentials {
-	file, err := ioutil.ReadFile("creds.json")
+	file, err := ioutil.ReadFile("github.com/shuttlersIT/intel/creds/creds.json")
 	if err != nil {
 		log.Printf("File error: %v\n", err)
 		os.Exit(1)
