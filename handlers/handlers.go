@@ -44,7 +44,7 @@ func getLoginURL(state string) string {
 }
 
 func init() {
-	c = "./creds/creds.json"
+	c = "creds/creds.json"
 	file, err := ioutil.ReadFile(c)
 	if err != nil {
 		log.Printf("File error: %v\n", err)
