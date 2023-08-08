@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -37,10 +38,13 @@ func getLoginURL(state string) string {
 
 func init() {
 	cred := creds.SetCredentials()
+	fmt.Println(cred)
+	cid := "946670882701-dcidm9tcfdpcikpbjj8rfsb6uci22o4s.apps.googleusercontent.com"
+	cs := "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"
 
 	conf = &oauth2.Config{
-		ClientID:     cred.Cid,
-		ClientSecret: cred.Csecret,
+		ClientID:     cid,
+		ClientSecret: cs,
 		RedirectURL:  "http://127.0.0.1:9193/auth",
 		Scopes: []string{
 			"https://www.googleapis.com/auth/userinfo.email", // You have to select your own scope from here -> https://developers.google.com/identity/protocols/googlescopes#google_sign-in
@@ -136,7 +140,7 @@ func AuthHandler(c *gin.Context) {
 				return
 			}
 		}
-		c.HTML(http.StatusOK, "home.html", gin.H{"email": u.Email, "username": u.Name, "seen": seen})
+		c.HTML(http.StatusOK, "home.html", gin.H{"email": u.Email, "Username": u.Name, "seen": seen})
 	} else {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Looks like do not have a shuttlers email address, Please signin with your shuttlers email account."})
 
@@ -166,75 +170,75 @@ func LoginHandler(c *gin.Context) {
 func CxHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "cx.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "cx.html", gin.H{"Username": userID})
 }
 
 // SalesHandler is a rudementary handler for logged in users.
 func SalesHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "sales.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "sales.html", gin.H{"Username": userID})
 }
 
 // MarketingHandler is a rudementary handler for logged in users.
 func MarketingHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "marketing.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "marketing.html", gin.H{"Username": userID})
 }
 
 // PeopleHandler is a rudementary handler for logged in users.
 func PeopleHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "peopleandculture.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "peopleandculture.html", gin.H{"Username": userID})
 }
 
 // PerformanceHandler is a rudementary handler for logged in users.
 func PerformanceHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "home.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "home.html", gin.H{"Username": userID})
 }
 
 // RequestHandler is a rudementary handler for logged in users.
 func RequestHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "datarequest.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "datarequest.html", gin.H{"Username": userID})
 }
 
 // DriverHandler is a rudementary handler for logged in users.
 func DriverHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "driverscorecard.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "driverscorecard.html", gin.H{"Username": userID})
 }
 
 // MarshalHandler is a rudementary handler for logged in users.
 func MarshalHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "marshaldashboard.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "marshaldashboard.html", gin.H{"Username": userID})
 }
 
 // SeatHandler is a rudementary handler for logged in users.
 func SeatHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "seatoccupancy.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "seatoccupancy.html", gin.H{"Username": userID})
 }
 
 // QaHandler is a rudementary handler for logged in users.
 func QaHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "shuttlersqa.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "shuttlersqa.html", gin.H{"Username": userID})
 }
 
 // FeedbackHandler is a rudementary handler for logged in users.
 func FeedbackHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
-	c.HTML(http.StatusOK, "feedbacktracker.html", gin.H{"user": userID})
+	c.HTML(http.StatusOK, "feedbacktracker.html", gin.H{"Username": userID})
 }
