@@ -94,7 +94,7 @@ func AuthHandler(c *gin.Context) {
 	tok, err := conf.Exchange(oauth2.NoContext, code)
 	if err != nil {
 		log.Println(err)
-		c.HTML(http.StatusBadRequest, "error.tmpl", gin.H{"message": "Login failed. Please try again."})
+		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Login failed. Please try again."})
 		return
 	}
 
