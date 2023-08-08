@@ -19,8 +19,8 @@ RUN mkdir -p templates
 # copy the binary file into working directory
 COPY --from=builder /go/src/github.com/shuttlersIT/intel/main .
 # copy the templates into working directory
-COPY --from=builder /go/src/github.com/shuttlersIT/intel/templates /go/src/github.com/shuttlersIT/intel/templates
-RUN cd templates && ls -lh
+COPY --from=builder /go/src/github.com/shuttlersIT/intel /go/src/github.com/shuttlersIT/intel
+RUN cd intel/templates && ls -lh
 # Run the contact_registry command when the container starts.
 CMD ["./main"]
 # http server listens on port 8080
