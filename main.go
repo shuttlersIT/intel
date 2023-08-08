@@ -47,7 +47,7 @@ func main() {
 		authorized.GET("/datarequest", handlers.RequestHandler)
 	}
 
-	if err := router.Run("127.0.0.1:9193"); err != nil {
+	if err := router.Run("localhost:9193"); err != nil {
 		log.Fatal(err)
 	}
 }
