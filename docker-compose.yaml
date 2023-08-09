@@ -21,7 +21,7 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - c:/Users/Administrator/Documents/dashboardportaldb/mongo:/data/db
+      - /home/oluwaseyi_yusuf/inteldb/mongo:/data/db
     networks:
       - node-network
 
