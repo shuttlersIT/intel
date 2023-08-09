@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -13,7 +12,6 @@ import (
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/mcnijman/go-emailaddress"
-	"github.com/shuttlersIT/intel/creds"
 	"github.com/shuttlersIT/intel/database"
 	"github.com/shuttlersIT/intel/structs"
 	"golang.org/x/oauth2"
@@ -37,8 +35,6 @@ func getLoginURL(state string) string {
 }
 
 func init() {
-	cred := creds.SetCredentials()
-	fmt.Println(cred)
 	cid := "946670882701-dcidm9tcfdpcikpbjj8rfsb6uci22o4s.apps.googleusercontent.com"
 	cs := "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"
 
