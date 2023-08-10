@@ -47,7 +47,7 @@ func main() {
 		authorized.GET("/datarequest", handlers.RequestHandler)
 	}
 
-	if err := router.Run("intel.shuttlers.africa:9193"); err != nil {
+	if err := router.Run("localhost:9193"); err != nil {
 		log.Fatal(err)
 	}
 }
