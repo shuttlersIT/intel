@@ -5,8 +5,8 @@ ENV APP_HOME /intel
 RUN mkdir "$APP_HOME"
 
 # Fetch dependencies.
-COPY go.mod .
-COPY go.sum .
+COPY go.mod "$APP_HOME"/
+COPY go.sum "$APP_HOME"/
 RUN go mod download
 RUN go mod vendor
 RUN go mod verify
