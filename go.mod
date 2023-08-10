@@ -3,7 +3,6 @@ module github.com/shuttlersIT/intel
 go 1.18
 
 require (
-	github.com/gin-contrib/sessions v0.0.5
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/contrib v0.0.0-20221130124618-7e01895a63f2
 	github.com/gin-gonic/gin v1.9.1
