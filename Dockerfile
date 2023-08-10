@@ -14,21 +14,22 @@ RUN go mod verify
 RUN go build -o intel
 
 FROM alpine
+ENV APP_HOME /intel
 
 RUN adduser -S -D -H -h /intel intel
 USER intel
 
 COPY --from=builder "$APP_HOME"/intel /intel/
 
-COPY templates/ /intel/templates
-COPY conf/ /intel/conf
-COPY database/ /intel/database
-COPY handlers/ /intel/handlers
-COPY middleware/ /intel/middleware
-COPY structs/ /intel/structs
-COPY vendor/ /intel/vendors
+COPY templates/ "$APP_HOME"/templates
+COPY conf/ "$APP_HOME"/conf
+COPY database/ "$APP_HOME"/database
+COPY handlers/ "$APP_HOME"/handlers
+COPY middleware/ "$APP_HOME"/middleware
+COPY structs/ "$APP_HOME"/structs
+COPY vendor/ "$APP_HOME"/vendors
 
-WORKDIR /intel
+WORKDIR "$APP_HOME"
 
 EXPOSE 9193
 CMD ["./intel"]
