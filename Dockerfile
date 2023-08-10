@@ -2,15 +2,20 @@ FROM golang:1.19.0-alpine AS builder
 
 ENV APP_HOME /intel
 
-ADD ./* "$APP_HOME"/
+RUN mkdir "$APP_HOME"
+
+# Fetch dependencies.
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+RUN go mod vendor
+RUN go mod verify
+COPY . "$APP_HOME"/
 
 RUN ls "$APP_HOME"
 
 WORKDIR "$APP_HOME"
 
-RUN go mod tidy
-RUN go mod download
-RUN go mod verify
 RUN go build -o intel
 
 FROM alpine
@@ -21,13 +26,13 @@ USER intel
 
 COPY --from=builder "$APP_HOME"/intel /intel/
 
-COPY templates/ "$APP_HOME"/templates
-COPY conf/ "$APP_HOME"/conf
-COPY database/ "$APP_HOME"/database
-COPY handlers/ "$APP_HOME"/handlers
-COPY middleware/ "$APP_HOME"/middleware
-COPY structs/ "$APP_HOME"/structs
-COPY vendor/ "$APP_HOME"/vendors
+COPY templates/ /intel/templates
+COPY conf/ /intel/conf
+COPY database/ /intel/database
+COPY handlers/ /intel/handlers
+COPY middleware/ /intel/middleware
+COPY structs/ /intel/structs
+COPY vendor/ /intel/vendors
 
 WORKDIR "$APP_HOME"
 
