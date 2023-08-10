@@ -4,6 +4,8 @@ FROM golang:latest AS builder
 # working directory
 WORKDIR /go/src/github.com/shuttlersIT/intel
 
+COPY . /usr/share/nginx/html
+
 # Installing dependencies
 COPY go.* ./
 RUN go mod download
