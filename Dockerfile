@@ -1,24 +1,34 @@
-FROM golang:1.14.9-alpine AS builder
-RUN mkdir /intel
-COPY . /intel/
-RUN ls -la /intel/
-RUN cd /intel
+FROM golang:1.17.0-alpine AS builder
+
+ENV APP_HOME /go/src/intel
+
+WORKDIR "$APP_HOME"
+COPY src/ .
+
 RUN go mod download
-RUN go mod vendor
 RUN go mod verify
-WORKDIR /intel
-RUN go intel
+RUN go build -o intel
 
 FROM alpine
-RUN adduser -S -D -H -h /intel intel
+
+RUN adduser -S -D -H -h "$APP_HOME"/intel intel
 USER intel
-COPY --from=builder /intel/intel /intel/
-COPY templates/ /intel/templates
-COPY conf/ /intel/conf
-COPY database/ /intel/database
-COPY handlers/ /intel/handlers
-COPY middleware/ /intel/middleware
-COPY structs/ /intel/structs
-COPY vendor/ /intel/vendors
-WORKDIR /intel
-CMD ["./main"]
+
+ENV APP_HOME /go/src/intel
+
+RUN mkdir -p "$APP_HOME"
+
+WORKDIR "$APP_HOME"
+
+COPY src/templates/ templates/
+COPY src/conf/ conf/
+COPY src/database/ database/
+COPY src/handlers/ handlers/
+COPY src/middleware/ middleware/
+COPY src/structs/ structs/
+COPY src/vendor/ vendors/
+
+COPY --from=builder "$APP_HOME"/intel "$APP_HOME"
+
+EXPOSE 9193
+CMD ["./intel"]
