@@ -41,7 +41,7 @@ func init() {
 	conf = &oauth2.Config{
 		ClientID:     cid,
 		ClientSecret: cs,
-		RedirectURL:  "https://intel.shuttlers.africa/rest/oauth2-credential/callback",
+		RedirectURL:  "https://intelligence.shuttlers.africa/rest/oauth2-credential/callback",
 		Scopes: []string{
 			"https://www.googleapis.com/auth/userinfo.email", // You have to select your own scope from here -> https://developers.google.com/identity/protocols/googlescopes#google_sign-in
 		},

@@ -6,8 +6,8 @@ services:
       dockerfile: Dockerfile
       context: .
     environment:
-      - VIRTUAL_HOST=intel.shuttlers.africa
-      - LETSENCRYPT_HOST=intel.shuttlers.africa
+      - VIRTUAL_HOST=intelligence.shuttlers.africa
+      - LETSENCRYPT_HOST=intelligence.shuttlers.africa
     links:
       - mongodb
     depends_on:
