@@ -3,7 +3,8 @@ package main
 import (
 	"log"
 
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/shuttlersIT/intel/handlers"
 	"github.com/shuttlersIT/intel/middleware"
@@ -46,6 +47,8 @@ func main() {
 		authorized.GET("/shuttlersqa", handlers.QaHandler)
 		authorized.GET("/datarequest", handlers.RequestHandler)
 	}
+
+	router.Use(static.Serve("/", static.LocalFile("./templates", true)))
 
 	if err := router.Run(":9193"); err != nil {
 		log.Fatal(err)
