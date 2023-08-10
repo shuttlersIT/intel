@@ -1,40 +1,24 @@
-# build stage
-FROM golang:latest AS builder
-
-# working directory
-WORKDIR /go/src/github.com/shuttlersIT/intel
-
-COPY . /usr/share/nginx/html
-
-# Installing dependencies
-COPY go.* ./
+FROM golang:1.14.9-alpine AS builder
+RUN mkdir /intel
+COPY . /intel/
+RUN ls -la /intel/
+RUN cd /intel
 RUN go mod download
 RUN go mod vendor
 RUN go mod verify
+WORKDIR /intel
+RUN go intel
 
-# install html package
-RUN go get -d -v golang.org/x/net/html
-
-COPY . .
-
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
-
-# final stage
-FROM alpine:latest
-
-# working directory
-WORKDIR /go/src/github.com/shuttlersit/intel
-RUN mkdir -p templates
-
-# copy the binary file into working directory
-COPY --from=builder /go/src/github.com/shuttlersIT/intel/main .
-
-# copy the templates into working directory
-COPY --from=builder /go/src/github.com/shuttlersIT/intel /go/src/github.com/shuttlersIT/intel
-
-# http server listens on port 8080
-EXPOSE 9193
-ENTRYPOINT [ "/go/src/github.com/shuttlersIT/intel" ]
-
-# Run the contact_registry command when the container starts.
+FROM alpine
+RUN adduser -S -D -H -h /intel intel
+USER intel
+COPY --from=builder /intel/intel /intel/
+COPY templates/ /intel/templates
+COPY conf/ /intel/conf
+COPY database/ /intel/database
+COPY handlers/ /intel/handlers
+COPY middleware/ /intel/middleware
+COPY structs/ /intel/structs
+COPY vendor/ /intel/vendors
+WORKDIR /intel
 CMD ["./main"]
