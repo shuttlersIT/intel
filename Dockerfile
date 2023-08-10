@@ -1,4 +1,4 @@
-FROM golang:1.17.0-alpine AS builder
+FROM golang:1.19.0-alpine AS builder
 
 ENV APP_HOME /intel
 
