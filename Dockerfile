@@ -1,40 +1,33 @@
 FROM golang:1.19.0-alpine AS builder
 
-ENV APP_HOME /intel
+ENV GO111MODULE=on
+ENV GOFLAGS=-mod=vendor
 
-RUN mkdir "$APP_HOME"
+COPY intel/ /intel/
+RUN ls --recursive /intel/
 
-# Fetch dependencies.
-COPY go.mod "$APP_HOME"/
-COPY go.sum "$APP_HOME"/
-RUN go mod download
+RUN go mod tidy
 RUN go mod vendor
 RUN go mod verify
-COPY . "$APP_HOME"/
 
-RUN ls "$APP_HOME"
+WORKDIR /intel
 
-WORKDIR "$APP_HOME"
+RUN go get -d -v golang.org/x/net/html
 
-RUN go build -o intel
+# Build
+RUN CGO_ENABLED=0 GOOS=linux go build -o /intel
 
-FROM alpine
-ENV APP_HOME /intel
+FROM alpine:latest
 
-RUN adduser -S -D -H -h /intel intel
-USER intel
+ENV GO111MODULE=on
+ENV GOFLAGS=-mod=vendor
 
-COPY --from=builder "$APP_HOME"/intel /intel/
+WORKDIR / 
 
-COPY templates/ /intel/templates
-COPY conf/ /intel/conf
-COPY database/ /intel/database
-COPY handlers/ /intel/handlers
-COPY middleware/ /intel/middleware
-COPY structs/ /intel/structs
-COPY vendor/ /intel/vendors
-
-WORKDIR "$APP_HOME"
+COPY --from=builder /intel /intel
 
 EXPOSE 9193
+
+USER oluwaseyi_yusuf:oluwaseyi_yusuf
+
 CMD ["./intel"]
