@@ -5,6 +5,10 @@ services:
     build:
       dockerfile: Dockerfile
       context: .
+    container_name: intel
+    hostname: intel.shuttlers.africa
+    ports:
+      - "9193:9193"
     environment:
       - VIRTUAL_HOST=intel.shuttlers.africa
       - LETSENCRYPT_HOST=intel.shuttlers.africa
@@ -22,6 +26,18 @@ services:
       - '27017:27017'
     volumes:
       - /home/oluwaseyi_yusuf/inteldb/mongo:/data/db
+    networks:
+      - node-network
+
+  nginx:
+    build:
+      context: ./
+    container_name: nginx
+    hostname: nginx  
+    ports:
+      - "9193:9193" 
+    depends_on:
+      - intel
     networks:
       - node-network
 
