@@ -5,6 +5,8 @@ WORKDIR /intel
 ENV GO111MODULE=on
 ENV GOFLAGS=-mod=vendor
 
+RUN go get -d -v golang.org/x/net/html
+
 COPY go.mod go.sum ./
 RUN go mod download
 RUN go mod vendor
@@ -12,8 +14,6 @@ RUN go mod verify
 
 COPY . ./
 RUN ls -la ./*
-
-RUN go get -d -v golang.org/x/net/html
 
 # Build
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o /intel-app
