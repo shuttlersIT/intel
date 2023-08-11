@@ -24,6 +24,7 @@ ENV GOFLAGS=-mod=vendor
 
 WORKDIR / 
 
+COPY intel/templates templates/
 COPY --from=builder /intel /intel
 
 EXPOSE 9193
