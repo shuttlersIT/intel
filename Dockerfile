@@ -15,7 +15,7 @@ RUN go mod verify
 RUN go get -d -v golang.org/x/net/html
 
 # Build
-RUN CGO_ENABLED=0 GOOS=linux go build -o /intel
+RUN CGO_ENABLED=0 GOOS=linux go build -o /intel-app
 
 FROM alpine:latest
 
@@ -25,10 +25,10 @@ ENV GOFLAGS=-mod=vendor
 WORKDIR / 
 
 COPY templates/ templates/
-COPY --from=builder /intel /intel
+COPY --from=builder /intel-app /intel-app
 
 EXPOSE 9193
 
 USER oluwaseyi_yusuf:oluwaseyi_yusuf
 
-CMD ["./intel"]
+CMD ["./intel-app"]
