@@ -1,5 +1,7 @@
 FROM golang:1.19.0-alpine AS builder
 
+WORKDIR /intel
+
 ENV GO111MODULE=on
 ENV GOFLAGS=-mod=vendor
 
@@ -9,8 +11,6 @@ RUN ls --recursive /intel/
 RUN go mod tidy
 RUN go mod vendor
 RUN go mod verify
-
-WORKDIR /intel
 
 RUN go get -d -v golang.org/x/net/html
 
@@ -24,7 +24,7 @@ ENV GOFLAGS=-mod=vendor
 
 WORKDIR / 
 
-COPY intel/templates templates/
+COPY templates/ templates/
 COPY --from=builder /intel /intel
 
 EXPOSE 9193
