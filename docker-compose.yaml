@@ -31,11 +31,11 @@ services:
 
   nginx:
     build:
-      context: ./
+      context: ./nginx
     container_name: nginx
     hostname: nginx  
     ports:
-      - "9193:9193" 
+      - "80:80" 
     depends_on:
       - intel
     networks:

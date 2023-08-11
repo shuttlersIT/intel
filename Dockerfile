@@ -5,7 +5,7 @@ WORKDIR /intel
 ENV GO111MODULE=on
 ENV GOFLAGS=-mod=vendor
 
-RUN go get -d -v golang.org/x/net/html
+#RUN go get -d -v golang.org/x/net/html
 
 COPY go.mod go.sum ./
 RUN go mod download
