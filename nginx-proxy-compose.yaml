@@ -3,6 +3,7 @@ services:
   
   nginx:
     restart: always
+    image: jwilder/nginx-proxy
     container_name: nginx
     hostname: nginx  
     ports:
