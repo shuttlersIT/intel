@@ -1,10 +1,10 @@
-version: '3'
+version: '3.6'
 services: 
   intel: 
     restart: always
     build:
       dockerfile: Dockerfile
-      context: .
+      context: "."
     container_name: intel
     hostname: intel.shuttlers.africa
     ports:
