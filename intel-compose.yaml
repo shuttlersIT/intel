@@ -4,9 +4,7 @@ services:
     restart: always
     build:
       dockerfile: Dockerfile
-      context: "."
-    container_name: intel
-    hostname: intel.shuttlers.africa
+      context: .
     ports:
       - "9193:9193"
     environment:
@@ -28,19 +26,7 @@ services:
       - /home/oluwaseyi_yusuf/inteldb/mongo:/data/db
     networks:
       - node-network
-
-  nginx:
-    build:
-      context: ./nginx
-    container_name: nginx
-    hostname: nginx  
-    ports:
-      - "80:80" 
-    depends_on:
-      - intel
-    networks:
-      - node-network
-
+    
 volumes:
   mongo:
 

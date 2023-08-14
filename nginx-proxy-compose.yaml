@@ -1,0 +1,34 @@
+version: '3.6'
+services: 
+  
+  nginx:
+    restart: always
+    container_name: nginx
+    hostname: nginx  
+    ports:
+      - "80:80"
+      - "443:443" 
+    volumes:
+      - "/etc/nginx/vhost.d"
+      - "/usr/share/nginx/html"
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "/etc/nginx/certs"
+    networks:
+      - node-network
+
+  letsencrypt-nginx-proxy-companion:
+    restart: always
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    volumes_from:
+      - "nginx"
+    networks:
+      - node-network
+
+volumes:
+  mongo:
+
+networks:
+  node-network:
+    driver: bridge
