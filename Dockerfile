@@ -16,7 +16,7 @@ COPY . ./
 RUN ls -la ./*
 
 # Build
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o /intel-app
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o /intel
 
 FROM alpine:latest
 
@@ -26,10 +26,10 @@ ENV GOFLAGS=-mod=vendor
 WORKDIR / 
 
 COPY templates/ templates/
-COPY --from=builder /intel-app /intel-app
+COPY --from=builder /intel /intel
 
 EXPOSE 9193
 
 USER oluwaseyi_yusuf:oluwaseyi_yusuf
 
-CMD ["./intel-app"]
+CMD ["./intel"]
