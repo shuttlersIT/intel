@@ -23,7 +23,7 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - /home/oluwaseyi_yusuf/inteldb/mongo:/data/db
+      - /inteldb/mongo:/data/db
     networks:
       - node-network
     

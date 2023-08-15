@@ -36,6 +36,4 @@ COPY --from=builder /intel /intel
 
 EXPOSE 9193
 
-USER oluwaseyi_yusuf:oluwaseyi_yusuf
-
 CMD ["./intel"]
