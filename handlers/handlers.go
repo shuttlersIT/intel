@@ -7,11 +7,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/mcnijman/go-emailaddress"
 	"github.com/shuttlersIT/intel/database"
 	"github.com/shuttlersIT/intel/structs"
 	"golang.org/x/oauth2"
@@ -75,7 +73,7 @@ func IndexHandler(c *gin.Context) {
 // AuthHandler handles authentication of a user and initiates a session.
 func AuthHandler(c *gin.Context) {
 	//Declare shuttlers domain
-	shuttlersDomain := "shuttlers.ng"
+	//shuttlersDomain := "shuttlers.ng"
 
 	// Handle the exchange code to initiate a transport.
 	session := sessions.Default(c)
@@ -110,38 +108,61 @@ func AuthHandler(c *gin.Context) {
 		return
 	}
 
-	usersEmail, err := emailaddress.Parse(u.Email)
+	session.Set("user-id", u.Email)
+	session.Set("user-name", u.Name)
+	err = session.Save()
 	if err != nil {
-		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Looks like your email address is invalid, try again."})
+		log.Println(err)
+		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Error while saving session. Please try again."})
+		return
 	}
-
-	if strings.Compare(usersEmail.Domain, shuttlersDomain) == 0 {
-		session.Set("user-id", u.Email)
-		session.Set("user-name", u.Name)
-		err = session.Save()
+	seen := false
+	db := database.MongoDBConnection{}
+	if _, mongoErr := db.LoadUser(u.Email); mongoErr == nil {
+		seen = true
+	} else {
+		err = db.SaveUser(&u)
 		if err != nil {
 			log.Println(err)
-			c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Error while saving session. Please try again."})
+			c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Something went wrong... it's not you, its us. Please try again."})
 			return
 		}
-		seen := false
-		db := database.MongoDBConnection{}
-		if _, mongoErr := db.LoadUser(u.Email); mongoErr == nil {
-			seen = true
-		} else {
-			err = db.SaveUser(&u)
+	}
+	c.HTML(http.StatusOK, "portal.html", gin.H{"email": u.Email, "Username": u.Name, "seen": seen})
+
+	/*
+		usersEmail, err := emailaddress.Parse(u.Email)
+		if err != nil {
+			c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Looks like your email address is invalid, try again."})
+		}
+
+		if strings.Compare(usersEmail.Domain, shuttlersDomain) == 0 {
+			session.Set("user-id", u.Email)
+			session.Set("user-name", u.Name)
+			err = session.Save()
 			if err != nil {
 				log.Println(err)
-				c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Something went wrong... it's not you, its us. Please try again."})
+				c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Error while saving session. Please try again."})
 				return
 			}
+			seen := false
+			db := database.MongoDBConnection{}
+			if _, mongoErr := db.LoadUser(u.Email); mongoErr == nil {
+				seen = true
+			} else {
+				err = db.SaveUser(&u)
+				if err != nil {
+					log.Println(err)
+					c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Something went wrong... it's not you, its us. Please try again."})
+					return
+				}
+			}
+			c.HTML(http.StatusOK, "portal.html", gin.H{"email": u.Email, "Username": u.Name, "seen": seen})
+		} else {
+			c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Looks like do not have a shuttlers email address, Please signin with your shuttlers email account."})
+
 		}
-		c.HTML(http.StatusOK, "portal.html", gin.H{"email": u.Email, "Username": u.Name, "seen": seen})
-	} else {
-		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Looks like do not have a shuttlers email address, Please signin with your shuttlers email account."})
-
-	}
-
+	*/
 }
 
 // LoginHandler handles the login procedure.
