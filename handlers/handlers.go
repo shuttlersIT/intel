@@ -163,6 +163,13 @@ func LoginHandler(c *gin.Context) {
 }
 
 // CxHandler is a rudementary handler for logged in users.
+func PortalHandler(c *gin.Context) {
+	session := sessions.Default(c)
+	userID := session.Get("user-id")
+	c.HTML(http.StatusOK, "portal.html", gin.H{"Username": userID})
+}
+
+// CxHandler is a rudementary handler for logged in users.
 func CxHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")

@@ -36,6 +36,7 @@ func main() {
 	authorized := router.Group("/")
 	authorized.Use(middleware.AuthorizeRequest())
 	{
+		authorized.GET("/portal", handlers.PortalHandler)
 		authorized.GET("/cx", handlers.CxHandler)
 		authorized.GET("/sales", handlers.SalesHandler)
 		authorized.GET("/home", handlers.PerformanceHandler)
