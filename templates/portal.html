@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-signin-client_id" content="946670882701-dcidm9tcfdpcikpbjj8rfsb6uci22o4s.apps.googleusercontent.com">
+  <meta name="google-signin-client_id" content="946670882701-m2abv211cro66d5iho0rt2j8oth3670f.apps.googleusercontent.com">
   <title>Welcome - Shuttlers Business Intelligence</title>
 
   <link rel="stylesheet" href="css/main.min.css">
@@ -217,13 +217,23 @@
             <form method="get">
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
-                  <a href="{{ .link }}"><button type='button' class="label">Sign in with google</button></a>
+                  {{if .seen}}
+                    <h1>Welcome back to the battlefield:</h1>
+                  {{else}}
+                    <h1>Welcome to the battlefield '{{ .email }}'.</h1>
+                  {{end}}
                 </div>
                 <div class="field-body">
                   <div class="field">
-                    <p class="control is-expanded has-icons-left">
-                      <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                    </p>
+                    {{if .seen}}
+                      <p class="control is-expanded has-icons-left">
+                        <h1>'{{ .Username }}' - '{{ .email }}'.</h1>
+                      </p>
+                    {{else}}
+                      <p class="control is-expanded has-icons-left">
+                        <h1>'{{ .Username }}' - '{{ .email }}'.</h1>
+                      </p>
+                    {{end}}    
                   </div>
                 </div>
               </div>

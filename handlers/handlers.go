@@ -41,7 +41,7 @@ func init() {
 	conf = &oauth2.Config{
 		ClientID:     cid,
 		ClientSecret: cs,
-		RedirectURL:  "https://intelligence.shuttlers.africa/rest/oauth2-credential/callback",
+		RedirectURL:  "https://intel.shuttlers.africa/auth",
 		Scopes: []string{
 			"https://www.googleapis.com/auth/userinfo.email", // You have to select your own scope from here -> https://developers.google.com/identity/protocols/googlescopes#google_sign-in
 		},
@@ -49,7 +49,7 @@ func init() {
 	}
 }
 
-// IndexHandler handles the location /.
+/* IndexHandler handles the location /.
 func IndexHandler(c *gin.Context) {
 	state, err := RandToken(32)
 	if err != nil {
@@ -65,10 +65,10 @@ func IndexHandler(c *gin.Context) {
 	}
 	link := getLoginURL(state)
 	c.HTML(http.StatusOK, "login.html", gin.H{"link": link})
-}
+}*/
 
 //IndexHandler handles the login
-func IndexHandler2(c *gin.Context) {
+func IndexHandler(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
@@ -121,7 +121,7 @@ func AuthHandler(c *gin.Context) {
 		err = session.Save()
 		if err != nil {
 			log.Println(err)
-			c.HTML(http.StatusBadRequest, "index.html", gin.H{"message": "Error while saving session. Please try again."})
+			c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Error while saving session. Please try again."})
 			return
 		}
 		seen := false
@@ -136,7 +136,7 @@ func AuthHandler(c *gin.Context) {
 				return
 			}
 		}
-		c.HTML(http.StatusOK, "home.html", gin.H{"email": u.Email, "Username": u.Name, "seen": seen})
+		c.HTML(http.StatusOK, "portal.html", gin.H{"email": u.Email, "Username": u.Name, "seen": seen})
 	} else {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Looks like do not have a shuttlers email address, Please signin with your shuttlers email account."})
 
@@ -148,18 +148,18 @@ func AuthHandler(c *gin.Context) {
 func LoginHandler(c *gin.Context) {
 	state, err := RandToken(32)
 	if err != nil {
-		c.HTML(http.StatusInternalServerError, "index.html", gin.H{"message": "Error while generating random data."})
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{"message": "Error while generating random data."})
 		return
 	}
 	session := sessions.Default(c)
 	session.Set("state", state)
 	err = session.Save()
 	if err != nil {
-		c.HTML(http.StatusInternalServerError, "index.html", gin.H{"message": "Error while saving session."})
+		c.HTML(http.StatusInternalServerError, "error.html", gin.H{"message": "Error while saving session."})
 		return
 	}
 	link := getLoginURL(state)
-	c.HTML(http.StatusOK, "login.html", gin.H{"link": link})
+	c.HTML(http.StatusOK, "auth.html", gin.H{"link": link})
 }
 
 // CxHandler is a rudementary handler for logged in users.

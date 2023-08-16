@@ -1,6 +1,6 @@
 version: '3.6'
-services: 
-  intel: 
+services:
+  intel:
     restart: always
     build:
       dockerfile: Dockerfile
@@ -15,21 +15,21 @@ services:
     depends_on:
       - mongodb
     networks:
-      - node-network
-  
+      - intel-network
+
   mongodb:
     container_name: mongodb
     image: mongo:latest
     ports:
       - '27017:27017'
     volumes:
-      - /inteldb/mongo:/data/db
+      - /intel/bin/mongo:/data/db
     networks:
-      - node-network
-    
+      - intel-network
+
 volumes:
   mongo:
 
 networks:
-  node-network:
+  intel-network:
     driver: bridge

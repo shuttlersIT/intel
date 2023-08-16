@@ -29,6 +29,7 @@ func main() {
 	router.LoadHTMLGlob("templates/*.html")
 
 	router.GET("/", handlers.IndexHandler)
+	router.GET("/index", handlers.IndexHandler)
 	router.GET("/login", handlers.LoginHandler)
 	router.GET("/auth", handlers.AuthHandler)
 
