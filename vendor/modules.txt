@@ -104,9 +104,6 @@ github.com/leodido/go-urn
 # github.com/mattn/go-isatty v0.0.19
 ## explicit; go 1.15
 github.com/mattn/go-isatty
-# github.com/mcnijman/go-emailaddress v1.1.0
-## explicit
-github.com/mcnijman/go-emailaddress
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 ## explicit
 github.com/modern-go/concurrent
@@ -158,7 +155,6 @@ golang.org/x/net/http2
 golang.org/x/net/http2/h2c
 golang.org/x/net/http2/hpack
 golang.org/x/net/idna
-golang.org/x/net/publicsuffix
 # golang.org/x/oauth2 v0.11.0
 ## explicit; go 1.18
 golang.org/x/oauth2
