@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shuttlersIT/intel/handlers"
@@ -33,7 +32,7 @@ func main() {
 	router.GET("/login", handlers.LoginHandler)
 	router.GET("/auth", handlers.AuthHandler)
 
-	authorized := router.Group("/")
+	authorized := router.Group("/portal")
 	authorized.Use(middleware.AuthorizeRequest())
 	{
 		authorized.GET("/portal", handlers.PortalHandler)
@@ -49,7 +48,7 @@ func main() {
 		authorized.GET("/shuttlersqa", handlers.QaHandler)
 		authorized.GET("/datarequest", handlers.RequestHandler)
 	}
-	router.Use(static.Serve("/", static.LocalFile("./templates", true)))
+	//router.Use(static.Serve("/", static.LocalFile("./templates", true)))
 
 	if err := router.Run(":9193"); err != nil {
 		log.Fatal(err)
