@@ -67,7 +67,7 @@ func IndexHandler(c *gin.Context) {
 	c.HTML(http.StatusOK, "login.html", gin.H{"link": link})
 }
 
-//IndexHandler handles the login
+// IndexHandler handles the login
 func IndexHandler2(c *gin.Context) {
 	c.HTML(http.StatusOK, "index.html", gin.H{})
 }
@@ -163,6 +163,13 @@ func LoginHandler(c *gin.Context) {
 }
 
 // CxHandler is a rudementary handler for logged in users.
+func PortalHandler(c *gin.Context) {
+	session := sessions.Default(c)
+	userID := session.Get("user-id")
+	c.HTML(http.StatusOK, "portal.html", gin.H{"Username": userID})
+}
+
+// CxHandler is a rudementary handler for logged in users.
 func CxHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
@@ -237,4 +244,11 @@ func FeedbackHandler(c *gin.Context) {
 	session := sessions.Default(c)
 	userID := session.Get("user-id")
 	c.HTML(http.StatusOK, "feedbacktracker.html", gin.H{"Username": userID})
+}
+
+// OperationsHandler is a rudementary handler for logged in users.
+func OperationsHandler(c *gin.Context) {
+	session := sessions.Default(c)
+	userID := session.Get("user-id")
+	c.HTML(http.StatusOK, "operations.html", gin.H{"Username": userID})
 }
