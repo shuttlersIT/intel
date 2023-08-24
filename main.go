@@ -25,6 +25,7 @@ func main() {
 	router.Use(sessions.Sessions("intelsession", store))
 	router.Static("/css", "templates/css")
 	router.Static("/img", "templates/img")
+	router.Static("/js", "templates/js")
 	router.LoadHTMLGlob("templates/*.html")
 
 	router.GET("/", handlers.PerformanceHandler)
