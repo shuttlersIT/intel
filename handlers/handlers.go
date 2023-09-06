@@ -128,7 +128,9 @@ func AuthHandler(c *gin.Context) {
 			return
 		}
 	}
-	c.HTML(http.StatusOK, "portal.html", gin.H{"email": u.Email, "Username": u.Email, "seen": seen})
+	userID := session.Get("user-id")
+	uName := session.Get("user-name")
+	c.HTML(http.StatusOK, "portal.html", gin.H{"name": uName, "Username": userID, "seen": seen})
 
 	/*
 		usersEmail, err := emailaddress.Parse(u.Email)
