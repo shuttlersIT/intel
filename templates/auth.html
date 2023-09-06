@@ -5,13 +5,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-signin-client_id" content="946670882701-m2abv211cro66d5iho0rt2j8oth3670f.apps.googleusercontent.com">
-  <title>Customer Service - Shuttlers Business Intelligence</title>
+  <meta name="google-signin-client_id" content="946670882701-dcidm9tcfdpcikpbjj8rfsb6uci22o4s.apps.googleusercontent.com">
+  <title>Welcome - Shuttlers Business Intelligence</title>
 
-  <!-- Bulma is included -->
   <link rel="stylesheet" href="css/main.min.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/extra.css">
 
   <!-- Fonts -->
   <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -44,7 +41,7 @@
             <span class="icon"><i class="mdi mdi-chevron-down"></i></span>
           </a>
           <div class="navbar-dropdown">
-            <a href="#" class="navbar-item">
+            <a href="profile.html" class="navbar-item">
               <span class="icon"><i class="mdi mdi-account"></i></span>
               <span>My Profile</span>
             </a>
@@ -98,7 +95,7 @@
       <p class="menu-label">Departments</p>
       <ul class="menu-list">
         <li>
-          <a href="/operations" class="has-icon has-dropdown-icon">
+          <a class="has-icon has-dropdown-icon">
             <span class="icon"><i class="mdi mdi-view-list"></i></span>
             <span class="menu-item-label">Operations</span>
             <div class="dropdown-icon">
@@ -146,7 +143,7 @@
           </a>
         </li>
         <li>
-          <a class="is-active router-link-active has-icon" href="#">
+          <a class="has-icon" href="/cx">
             <span class="icon"><i class="mdi mdi-desktop-mac"></i></span>
             <span class="menu-item-label">Customer Service</span>
           </a>
@@ -163,7 +160,7 @@
         <li>
           <a href="/datarequest" rel="noopener noreferrer" target="_blank" class="has-icon">
             <span class="icon"><i class="mdi mdi-credit-card-outline"></i></span>
-            <span class="menu-item-label">Data Request</span>
+            <span class="menu-item-label">Dashboard Request</span>
           </a>
         </li>
         <li>
@@ -180,8 +177,8 @@
       <div class="level-left">
         <div class="level-item">
           <ul>
-            <li>Customer</li>
-            <li>Service</li>
+            <li>Superhuman</li>
+            <li>Sign In </li>
           </ul>
         </div>
       </div>
@@ -205,15 +202,6 @@
   </section>
   <section class="section is-main-section">
     <div class="card">
-      <header class="card-header">
-        <p class="card-header-title">
-          <span class="icon"><i class="mdi mdi-finance"></i></span>
-          Customer Service
-        </p>
-        <a href="#" class="card-header-icon">
-          <span class="icon"><i class="mdi mdi-reload"></i></span>
-        </a>
-      </header>
       <div class="card-content">
         <div class="chart-area">
           <div style="height: 100%;">
@@ -225,7 +213,75 @@
                 <div></div>
               </div>
             </div>
-            <iframe title="Shuttlers Customer Service" class="chartjs-render-monitor" width="1200" height="800" style="display: flex; width: 100%;" src="https://app.powerbi.com/view?r=eyJrIjoiZjJmY2Y2MWUtMGRhMi00ZWFjLWJjMDYtMzJhZjFiNzdhNmYyIiwidCI6IjNiMmZmZThlLTY5OTAtNDhmNC1iNDA4LTA1NGJjYjY2ZTFiZiJ9" frameborder="0" allowFullScreen="true"></iframe>
+            
+            <form method="get">
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <a href="{{ .link }}"><button type='button' class="label">Login with google</button></a>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                      <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <hr>
+              <!--
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Username</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                      <input class="input" type="text" placeholder="Username" style="max-width: 400px">
+                      <span class="icon is-small is-left"><i class="mdi mdi-account"></i></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">Password</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <p class="control is-expanded has-icons-left">
+                      <input class="input" type="text" placeholder="Password"  style="max-width: 400px">
+                      <span class="icon is-small is-left"><i class="mdi mdi-account"></i></span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+              -->
+
+              <hr>
+              <div class="field is-horizontal">
+                <div class="field-label">
+                  <!-- Left empty for spacing -->
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="field is-grouped">
+                      <div class="control">
+                        <button type="submit" class="button is-primary">
+                          <span>Login</span>
+                        </button>
+                      </div>
+                      <div class="control">
+                        <button type="button" class="button is-primary is-outlined">
+                          <span>Forgot Password</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -280,7 +336,7 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 <script type="text/javascript" src="js/chart.sample.min.js"></script>
 
-<!-- Icons -->
+<!-- Icons below are for demo only. Feel free to use any icon pack. Docs: https://bulma.io/documentation/elements/icon/ -->
 <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.9.95/css/materialdesignicons.min.css">
 </body>
 </html>

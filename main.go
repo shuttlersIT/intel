@@ -22,14 +22,14 @@ func main() {
 	})
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-	router.Use(sessions.Sessions("intelsession", store))
+	router.Use(sessions.Sessions("portalsession", store))
 	router.Static("/css", "templates/css")
 	router.Static("/img", "templates/img")
 	router.Static("/js", "templates/js")
 	router.LoadHTMLGlob("templates/*.html")
 
-	router.GET("/", handlers.PerformanceHandler)
-	router.GET("/index", handlers.PerformanceHandler)
+	router.GET("/", handlers.IndexHandler)
+	router.GET("/index", handlers.IndexHandler)
 	router.GET("/login", handlers.LoginHandler)
 	router.GET("/auth", handlers.AuthHandler)
 

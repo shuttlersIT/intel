@@ -1,34 +1,37 @@
-version: '3'
-services: 
-  intel: 
+version: '3.6'
+services:
+  intel:
     restart: always
     container_name: intel
     build:
       dockerfile: Dockerfile
       context: .
     ports:
-      - 9193:9193
+      - '127.0.0.1:9193:9193'
     environment:
-      - VIRTUAL_HOST=intelligence.shuttlers.africa
-      - LETSENCRYPT_HOST=intelligence.shuttlers.africa
-      - MONGO_URI=mongodb://mongodb:27017
-      - CONN_STR=mongodb://mongodb:27017
+      - VIRTUAL_HOST=intel.shuttlers.africa
+      - LETSENCRYPT_HOST=intel.shuttlers.africa
+      - MONGO_URI=mongodb://mongo:27017
+      - CONN_STR=mongodb://mongo:27017   
     command: '/bin/bash -c "sleep 5; mongosh $$CONN_STR --eval \"show dbs;\""'
+    depends_on:
+      - mongo
     volumes:
       - .:/src
       - .:/var/www
-    links:
-      - mongodb
-    depends_on:
-      - mongodb
-  
-  mongodb:
-    container_name: mongodb
+
+  mongo:
     image: mongo:latest
+    container_name: mongo
+    restart: always
     ports:
-      - '27017:27017'
+      - '127.0.0.1:27017:27017'
     environment:
-      - VIRTUAL_HOST=mongodb://mongodb:27017
+      MONGO_INITDB_ROOT_USERNAME:
+      MONGO_INITDB_ROOT_PASSWORD:
+      VIRTUAL_HOST: "mongodb://mongo:27017"
+    volumes:
+      - mongodb_data:/data/db
 
   mongo-express:
     image: mongo-express
@@ -36,5 +39,12 @@ services:
     ports:
       - '127.0.0.1:8089:8089'
     environment:
-      ME_CONFIG_MONGODB_URL: mongodb://mongodb:27017/
+      ME_CONFIG_MONGODB_ADMINUSERNAME:
+      ME_CONFIG_MONGODB_ADMINPASSWORD:
+      ME_CONFIG_MONGODB_URL: "mongodb://mongo:27017/"
       VIRTUAL_HOST: mongo-express.shuttlers.africa
+    depends_on:
+      - mongo  
+
+volumes:
+  mongodb_data_cont:
