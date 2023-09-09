@@ -115,7 +115,7 @@ func AuthHandler(c *gin.Context) {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Error while saving session. Please try again."})
 		return
 	}
-	seen := false
+	//seen := false
 
 	/*
 		db := database.MongoDBConnection{}
@@ -131,7 +131,7 @@ func AuthHandler(c *gin.Context) {
 		}
 	*/
 	userID := session.Get("user-id")
-	uName := session.Get("user-name")
+	//uName := session.Get("user-name")
 	c.HTML(http.StatusOK, "home.html", gin.H{"Username": userID})
 	//c.HTML(http.StatusOK, "home.html", gin.H{"name": uNam, "Username": userID, "seen": seen})
 
