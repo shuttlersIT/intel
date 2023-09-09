@@ -10,7 +10,6 @@ import (
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"github.com/shuttlersIT/intel/database"
 	"github.com/shuttlersIT/intel/structs"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
@@ -117,20 +116,24 @@ func AuthHandler(c *gin.Context) {
 		return
 	}
 	seen := false
-	db := database.MongoDBConnection{}
-	if _, mongoErr := db.LoadUser(u.Email); mongoErr == nil {
-		seen = true
-	} else {
-		err = db.SaveUser(&u)
-		if err != nil {
-			log.Println(err)
-			c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Something went wrong... it's not you, its us. Please try again."})
-			return
+
+	/*
+		db := database.MongoDBConnection{}
+		if _, mongoErr := db.LoadUser(u.Email); mongoErr == nil {
+			seen = true
+		} else {
+			err = db.SaveUser(&u)
+			if err != nil {
+				log.Println(err)
+				c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Something went wrong... it's not you, its us. Please try again."})
+				return
+			}
 		}
-	}
+	*/
 	userID := session.Get("user-id")
 	uName := session.Get("user-name")
-	c.HTML(http.StatusOK, "portal.html", gin.H{"name": uName, "Username": userID, "seen": seen})
+	c.HTML(http.StatusOK, "home.html", gin.H{"Username": userID})
+	//c.HTML(http.StatusOK, "home.html", gin.H{"name": uNam, "Username": userID, "seen": seen})
 
 	/*
 		usersEmail, err := emailaddress.Parse(u.Email)
@@ -183,6 +186,16 @@ func LoginHandler(c *gin.Context) {
 	}
 	link := getLoginURL(state)
 	c.HTML(http.StatusOK, "auth.html", gin.H{"link": link})
+}
+
+// Logout Handler
+func LogoutHandler(c *gin.Context) {
+	session := sessions.Default(c)
+	session.Clear()
+	session.Save()
+	c.JSON(http.StatusOK, gin.H{
+		"message": "User Sign out successfully",
+	})
 }
 
 // CxHandler is a rudementary handler for logged in users.

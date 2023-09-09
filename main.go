@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shuttlersIT/intel/handlers"
@@ -10,16 +11,20 @@ import (
 )
 
 func main() {
+
+	//Dashboard APP
 	router := gin.Default()
 	token, err := handlers.RandToken(64)
 	if err != nil {
 		log.Fatal("unable to generate random token: ", err)
 	}
-	store := sessions.NewCookieStore([]byte(token))
+
+	store, _ := redis.NewStore(10, "tcp", "127.0.0.1:6379", "", []byte(token))
 	store.Options(sessions.Options{
 		Path:   "/",
 		MaxAge: 86400 * 7,
 	})
+
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 	router.Use(sessions.Sessions("portalsession", store))
@@ -32,6 +37,7 @@ func main() {
 	router.GET("/index", handlers.IndexHandler)
 	router.GET("/login", handlers.LoginHandler)
 	router.GET("/auth", handlers.AuthHandler)
+	router.GET("/logout", handlers.LogoutHandler)
 
 	authorized := router.Group("/")
 	authorized.Use(middleware.AuthorizeRequest())
@@ -52,7 +58,7 @@ func main() {
 	}
 	//router.Use(static.Serve("/", static.LocalFile("./templates", true)))
 
-	if err := router.Run(":9193"); err != nil {
+	if err := router.Run(":9194"); err != nil {
 		log.Fatal(err)
 	}
 }
