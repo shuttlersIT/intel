@@ -7,10 +7,8 @@ services:
       dockerfile: Dockerfile
       context: .
     ports:
-      - '127.0.0.1:9193:9193'
+      - '9193:9193'
     environment:
       - VIRTUAL_HOST=intel.shuttlers.africa
       - LETSENCRYPT_HOST=intel.shuttlers.africa
-    volumes:
-      - .:/src
-      - .:/var/www
+      - GIN_MODE=release

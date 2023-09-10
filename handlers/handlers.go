@@ -76,6 +76,13 @@ func AuthHandler(c *gin.Context) {
 
 	// Handle the exchange code to initiate a transport.
 	session := sessions.Default(c)
+	session.Options(sessions.Options{
+		MaxAge:   86400,
+		Path:     "/",
+		Secure:   true,
+		HttpOnly: true,
+	})
+
 	retrievedState := session.Get("state")
 	queryState := c.Request.URL.Query().Get("state")
 	if retrievedState != queryState {
@@ -178,6 +185,12 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	session := sessions.Default(c)
+	session.Options(sessions.Options{
+		MaxAge:   86400,
+		Path:     "/",
+		Secure:   true,
+		HttpOnly: true,
+	})
 	session.Set("state", state)
 	err = session.Save()
 	if err != nil {
