@@ -3,16 +3,17 @@ package main
 import (
 	"log"
 
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/redis"
-
+	//"github.com/gin-contrib/sessions"
 	//"github.com/gin-contrib/sessions/redis"
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/shuttlersIT/intel/handlers"
 	"github.com/shuttlersIT/intel/middleware"
 )
 
 func main() {
+	//RedisHost := "127.0.0.1"
+	//RedisPort := "6379"
 
 	//Dashboard APP
 	router := gin.Default()
@@ -21,15 +22,21 @@ func main() {
 		log.Fatal("unable to generate random token: ", err)
 	}
 
-	store, _ := redis.NewStore(10, "tcp", "127.0.0.1:6379", "", []byte(token))
+	store, _ := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", []byte(token))
+	//store := sessions.NewCookieStore([]byte(token))
 	store.Options(sessions.Options{
 		Path:   "/",
 		MaxAge: 86400 * 7,
 	})
+	router.Use(sessions.Sessions("portalsession", store))
+
+	// We check for errors.
+
+	//sessionStore, _ := sessions.NewRedisStore(10, "tcp", RedisHost+":"+RedisPort, "", []byte(token))
+	//router.Use(sessions.Sessions("portalsession", sessionStore))
 
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-	router.Use(sessions.Sessions("portalsession", store))
 	router.Static("/css", "templates/css")
 	router.Static("/img", "templates/img")
 	router.Static("/js", "templates/js")
@@ -57,10 +64,28 @@ func main() {
 		authorized.GET("/seatoccupancy", handlers.SeatHandler)
 		authorized.GET("/shuttlersqa", handlers.QaHandler)
 		authorized.GET("/datarequest", handlers.RequestHandler)
+		authorized.GET("/testing", homeTest)
 	}
 	//router.Use(static.Serve("/", static.LocalFile("./templates", true)))
 
 	if err := router.Run(":9193"); err != nil {
 		log.Fatal(err)
 	}
+
+}
+
+func homeTest(c *gin.Context) {
+	s := sessions.Default(c)
+	var count int
+	v := s.Get("count")
+	if v == nil {
+		count = 0
+	} else {
+		count = v.(int)
+		count += 1
+	}
+	s.Set("count", count)
+	s.Save()
+
+	c.JSON(200, gin.H{"count": count})
 }
