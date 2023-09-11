@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	//"github.com/gin-contrib/sessions"
@@ -22,7 +23,11 @@ func main() {
 		log.Fatal("unable to generate random token: ", err)
 	}
 
-	store, _ := sessions.NewRedisStore(10, "tcp", "localhost:6379", "", []byte(token))
+	store, storeError := sessions.NewRedisStore(10, "tcp", "127.0.0.1:6379", "", []byte(token))
+	if storeError != nil {
+		fmt.Println(storeError)
+		log.Fatal("Unable to create work with redis session ", storeError)
+	}
 	//store := sessions.NewCookieStore([]byte(token))
 	store.Options(sessions.Options{
 		Path:   "/",
