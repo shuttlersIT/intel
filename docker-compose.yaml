@@ -25,7 +25,7 @@ services:
     volumes:
       - /root/redis/intel/data:/data
     ports:
-      - '127.0.0.1:6389:6389'
+      - '127.0.0.1:6379:6379'
     environment:
      - REDIS_REPLICATION_MODE=master
     healthcheck:

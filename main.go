@@ -23,7 +23,7 @@ func main() {
 		log.Fatal("unable to generate random token: ", err)
 	}
 
-	store, storeError := sessions.NewRedisStore(10, "tcp", "127.0.0.1:6389", "", []byte(token))
+	store, storeError := sessions.NewRedisStore(10, "tcp", "127.0.0.1:6379", "", []byte(token))
 	if storeError != nil {
 		fmt.Println(storeError)
 		log.Fatal("Unable to create work with redis session ", storeError)
