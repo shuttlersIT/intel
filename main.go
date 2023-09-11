@@ -30,8 +30,11 @@ func main() {
 	}
 	//store := sessions.NewCookieStore([]byte(token))
 	store.Options(sessions.Options{
-		Path:   "/",
-		MaxAge: 86400 * 7,
+		Path:     "/",
+		Domain:   "",
+		MaxAge:   86400 * 7,
+		Secure:   false,
+		HttpOnly: false,
 	})
 	router.Use(sessions.Sessions("portalsession", store))
 
