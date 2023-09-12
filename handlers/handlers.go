@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"fmt"
 
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -76,18 +77,11 @@ func AuthHandler(c *gin.Context) {
 
 	// Handle the exchange code to initiate a transport.
 	session := sessions.Default(c)
-	session.Options(sessions.Options{
-		MaxAge:   86400,
-		Path:     "/",
-		Secure:   true,
-		HttpOnly: true,
-	})
-
 	retrievedState := session.Get("state")
 	queryState := c.Request.URL.Query().Get("state")
 	if retrievedState != queryState {
 		log.Printf("Invalid session state: retrieved: %s; Param: %s", retrievedState, queryState)
-		c.HTML(http.StatusUnauthorized, "error.tmpl", gin.H{"message": "Invalid session state."})
+		c.HTML(http.StatusUnauthorized, "error.html", gin.H{"message": "Invalid session state."})
 		return
 	}
 	code := c.Request.URL.Query().Get("code")
@@ -117,6 +111,7 @@ func AuthHandler(c *gin.Context) {
 	session.Set("user-id", u.Email)
 	session.Set("user-name", u.Name)
 	err = session.Save()
+	
 	if err != nil {
 		log.Println(err)
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Error while saving session. Please try again."})
@@ -138,6 +133,8 @@ func AuthHandler(c *gin.Context) {
 		}
 	*/
 	userID := session.Get("user-id")
+	fmt.Println(userID)
+	fmt.Println(session)
 	//uName := session.Get("user-name")
 	c.HTML(http.StatusOK, "home.html", gin.H{"Username": userID})
 	//c.HTML(http.StatusOK, "home.html", gin.H{"name": uNam, "Username": userID, "seen": seen})
@@ -185,12 +182,6 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 	session := sessions.Default(c)
-	session.Options(sessions.Options{
-		MaxAge:   86400,
-		Path:     "/",
-		Secure:   true,
-		HttpOnly: true,
-	})
 	session.Set("state", state)
 	err = session.Save()
 	if err != nil {

@@ -8,7 +8,6 @@ WORKDIR /intel
 
 ENV GO111MODULE=on
 ENV GOFLAGS=-mod=vendor
-ENV GIN_MODE=release
 
 #RUN go get -d -v golang.org/x/net/html
 #RUN go install golang.org/x/oauth2@latest
@@ -33,7 +32,6 @@ RUN apk --no-cache add ca-certificates
 
 ENV GO111MODULE=on
 ENV GOFLAGS=-mod=vendor
-ENV GIN_MODE=release
 
 WORKDIR /intel
 

@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -23,15 +24,17 @@ func main() {
 		log.Fatal("unable to generate random token: ", err)
 	}
 
-	store, storeError := sessions.NewRedisStore(10, "tcp", "127.0.0.1:6379", "", []byte(token))
+	store, storeError := sessions.NewRedisStore(10, "tcp", "redisDB:6379", "", []byte(token))
 	if storeError != nil {
 		fmt.Println(storeError)
 		log.Fatal("Unable to create work with redis session ", storeError)
 	}
 	//store := sessions.NewCookieStore([]byte(token))
 	store.Options(sessions.Options{
-		Path:   "/",
-		MaxAge: 86400 * 7,
+		Path:     "/",
+		MaxAge:   86400,
+		Secure:   true,
+		HttpOnly: true,
 	})
 	router.Use(sessions.Sessions("portalsession", store))
 
