@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -115,6 +116,7 @@ func AuthHandler(c *gin.Context) {
 		c.HTML(http.StatusBadRequest, "error.html", gin.H{"message": "Error while saving session. Please try again."})
 		return
 	}
+	fmt.Println(session)
 	//seen := false
 
 	/*
@@ -131,6 +133,7 @@ func AuthHandler(c *gin.Context) {
 		}
 	*/
 	userID := session.Get("user-id")
+	println(userID)
 	//uName := session.Get("user-name")
 	c.HTML(http.StatusOK, "home.html", gin.H{"Username": userID})
 	//c.HTML(http.StatusOK, "home.html", gin.H{"name": uNam, "Username": userID, "seen": seen})

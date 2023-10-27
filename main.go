@@ -31,11 +31,11 @@ func main() {
 	//store := sessions.NewCookieStore([]byte(token))
 	store.Options(sessions.Options{
 		Path:     "/",
-		Domain:   "",
-		MaxAge:   86400 * 7,
-		Secure:   false,
-		HttpOnly: false,
+		MaxAge:   86400,
+		Secure:   true,
+		HttpOnly: true,
 	})
+
 	router.Use(sessions.Sessions("portalsession", store))
 
 	// We check for errors.
@@ -50,12 +50,13 @@ func main() {
 	router.Static("/js", "templates/js")
 	router.LoadHTMLGlob("templates/*.html")
 
-	router.GET("/", handlers.IndexHandler)
+	//router.GET("/", handlers.IndexHandler)
 	router.GET("/index", handlers.IndexHandler)
 	router.GET("/login", handlers.LoginHandler)
 	router.GET("/auth", handlers.AuthHandler)
 	router.GET("/logout", handlers.LogoutHandler)
 
+	//Protected Routes
 	authorized := router.Group("/")
 	authorized.Use(middleware.AuthorizeRequest())
 	{
